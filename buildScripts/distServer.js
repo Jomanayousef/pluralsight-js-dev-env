@@ -1,21 +1,19 @@
 import express from 'express';
 import {join} from 'path';
 import open from 'open';
-import webpack from 'webpack';
-import config from '../webpack.config.dev';
+import compression from 'compression';
 
 /* eslint-disable no-console */
 const port = 5000;
 const app = express();
-const compiler = webpack(config);
 
-app.use(require('webpack-dev-middleware')(compiler,{
-  noInfo: true,
-  publicPath: config.output.publicPath
-}));
+app.use(compression());
+app.use(express.static('dist'));
+
+
 
 app.get('/', function(req, res){
-  res.sendFile(join(__dirname,'../src/index.html'))
+  res.sendFile(join(__dirname,'../dist/index.html'))
 });
 
 app.get('/users', function(req, res){
